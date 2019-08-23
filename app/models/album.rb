@@ -1,4 +1,7 @@
 class Album < ApplicationRecord
+
+  scope :available, -> {  where(name: nil) }
+  
   belongs_to :artist
   has_many :songs
 
