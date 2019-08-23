@@ -2,29 +2,20 @@ module Api
   module V1
     class SongsController < ApplicationController
       def index
-        if params[:album_id].present?
-          @songs = Album.find(params[:album_id]).songs
-        elsif params[:playlist_id].present?
-          @songs = Playlist.find(params[:playlist_id]).songs
-        else
-          @songs = Song.all
-        end
+        @songs = if params[:album_id].present?
+                   Album.find(params[:album_id]).songs
+                 elsif params[:playlist_id].present?
+                   Playlist.find(params[:playlist_id]).songs
+                 else
+                   Song.all
+                 end
 
-        # TODO: Sorting code should be extracted
-        if params[:sort] == "random"
-          @sorted_songs = @songs.to_a.shuffle
-        elsif params[:sort] == "reverse"
-          @sorted_songs = @songs.to_a.reverse
-        else
-          @sorted_songs = @songs
-        end
-
+        @sorted_songs = SongSorter.new(@songs, params[:sort]).sort
         render json: @sorted_songs
       end
 
       def show
         @song = Song.find(params[:id])
-
         render json: @song
       end
 
