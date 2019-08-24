@@ -14,7 +14,7 @@ RSpec.describe "Get Album", type: :request do
       # puts json_body[:name]
       expect(response).to have_http_status(200)
       expect(json_body.count).to eq(6)
-      expect(json_body[:name]).to include("Battle of Los Angles")
+      expect(json_body[:name]).to include(album.name)
       # write an expectation about the response status code
       # write an expecation about the response json_body
     end
