@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Album, Artist, type: :model do
-  let (:artist_id) { Artist.create({:name => "RATM"}).id }
+  let (:artist) { Artist.create({:name => "RATM"}) }
 
   describe "validations" do
     it "is valid" do
             # instantiate a valid album and ensure it is valid
-      album = Album.create!({name: "tname", artist_id: artist_id })
+      album = artist.albums.create!({name: "tname"})
       # puts 'valid album'
       # puts album.available
 
@@ -19,7 +19,7 @@ RSpec.describe Album, Artist, type: :model do
             # instantiate an album without a name and ensure it is invalid
       result = true
       begin
-        Album.create!({name: nil, artist_id: artist_id})
+        artist.albums.create!({name: nil})
         puts "invalid test failed"
       
         
@@ -57,32 +57,16 @@ RSpec.describe Album, Artist, type: :model do
   end
 
   context "scopes" do
-    # let (:albums) { Album.create([
-    #   {name: :valid1, artist_id: artist_id },
-    #   {name: :valid2, artist_id: artist_id },
-    #   {name: :valid3, artist_id: artist_id },
-    #   {name: :valid9, artist_id: artist_id }
-    #   # {name: nil, artist_id: artist_id },
-    #   # {name: nil, artist_id: artist_id },
-    #   # {name: nil, artist_id: artist_id }            
-    # ])}    
+
+       
     describe "available" do
       before do
-        # @artist_id = 1
-        # a1 =  Album.new({name: :valid1, artist_id: @artist_id })
-        # a9 =  Album.new({name: :valid9, artist_id: @artist_id })
-        # a2 =  Album.new({name: :valid2, artist_id: @artist_id })
-        # a3 =  Album.new({name: :valid3, artist_id: @artist_id })
-        # a4 =  Album.new({name: :valid4, artist_id: @artist_id })  
-        # na1 =  Album.new({name: :invalid1, artist_id: @artist_id })
-        # na2 =  Album.new({name: :invalid1, artist_id: @artist_id })
-        # na3 =  Album.new({name: :invalid1, artist_id: @artist_id })        
-        # @albums = [a1, a9, a2, a3, a4, na1, na2, na3 ]      
-        Album.create!([
-          {name: :valid1, artist_id: artist_id },
-          {name: :valid2, artist_id: artist_id },
-          {name: :valid3, artist_id: artist_id },
-          {name: :valid9, artist_id: artist_id }          
+      
+        artist.albums.create!([
+          {name: :valid1 },
+          {name: :valid2 },
+          {name: :valid3 },
+          {name: :valid9 }          
         ])
 
                
@@ -91,7 +75,7 @@ RSpec.describe Album, Artist, type: :model do
         # set up a some available albums and unavailable albums and make expecations that the
         # available albums scope only returns available albums sorted by name
 
-        result = Album.available
+        result = artist.albums.available
 
         expect(result.count).to eq 4
         expect(result.first.name).to eq("valid1")
@@ -104,10 +88,8 @@ RSpec.describe Album, Artist, type: :model do
   describe "#length_seconds" do
     it "calculates the total length in seconds of an album" do
       # setup a valid album and songs and make expecations about the return value of length seconds
-      # album = Album.new({name: "tname", artist_id: 1})
-      # album.save!
-      # album = Album.create!({name: :tname, artist_id: 1}, :without_protection => true )
-      album = Album.new({ :name => 'Jamie', :artist_id => artist_id })
+
+      album = artist.albums.new({ :name => 'Jamie'})
       album.save!
       album = Album.find_by name: "Jamie"
       songs = Song.create!([

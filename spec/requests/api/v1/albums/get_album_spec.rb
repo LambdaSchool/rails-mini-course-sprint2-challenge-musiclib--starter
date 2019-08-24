@@ -3,8 +3,7 @@ require 'rails_helper'
 RSpec.describe "Get Album", type: :request do
   describe "GET /api/v1/albums/:id" do
     let(:album) {
-      artist_id = Artist.create!({name: 'RATM'}).id
-      Album.create({name: "Battle of Los Angles", artist_id: artist_id})
+      Artist.create!({name: 'RATM'}).albums.create({name: "Battle of Los Angles"})
     }
 
     it "gets the album" do
