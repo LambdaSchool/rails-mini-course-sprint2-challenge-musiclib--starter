@@ -66,7 +66,7 @@ RSpec.describe Album, Artist, type: :model do
     #   # {name: nil, artist_id: artist_id },
     #   # {name: nil, artist_id: artist_id }            
     # ])}    
-    describe "Available" do
+    describe "available" do
       before do
         # @artist_id = 1
         # a1 =  Album.new({name: :valid1, artist_id: @artist_id })
@@ -91,7 +91,7 @@ RSpec.describe Album, Artist, type: :model do
         # set up a some available albums and unavailable albums and make expecations that the
         # available albums scope only returns available albums sorted by name
 
-        result = Album.Available
+        result = Album.available
 
         expect(result.count).to eq 4
         expect(result.first.name).to eq("valid1")

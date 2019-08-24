@@ -1,6 +1,6 @@
 class Album < ApplicationRecord
 
-  scope :Available, -> {  where( available: true ).sort_by(&:name) }
+  scope :available, -> {  where( available: true ).sort_by(&:name) }
   # scope :active_salaried, -> { where(deactivated_at: nil, pay_status: "salary") }
   
   belongs_to :artist
